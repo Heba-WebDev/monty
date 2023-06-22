@@ -1,16 +1,10 @@
 #ifndef MONTY_H
 #define MONTY_H
 
-#include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <stdio.h>
 #include <string.h>
-#include <sys/wait.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <signal.h>
-#define DELIMS " \n\t\r"
+
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -42,7 +36,48 @@ typedef struct instruction_s
         void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+/**
+ * struct instruction_s - opcode and its function
+ * @command: the opcode
+ * @stack: stack
+ * @line: line number
+ * @data: data to add
+ * @ac: main args
+ * @av: main args av
+ *
+ * Description: variables structure
+ */
+typedef struct arguments_s
+{
+        char *buffer;
+        stack_t *stack;
+	int line;
+	int data;
+	char *command;
+	FILE *source;
+	int ac;
+	char **av;
+} arguments_t;
 
-void push(stack_t **stack, unsigned int data);
-void pall(stack_t **stack, unsigned int data);
+
+arguments_t *init_args(arguments_t *args, int ac, char **av);
+int precheck_args(arguments_t *args);
+void compile_file(arguments_t *args);
+int check_num(char *num);
+int get_command(arguments_t *args);
+void compile_file(arguments_t *args);
+stack_t *push(stack_t **head, const int n);
+void pall(stack_t **h, unsigned int line_number);
+void pint(stack_t **stack, unsigned int line_number);
+void pop(stack_t **head, unsigned int index);
+void (*get_opcode(arguments_t *args))(stack_t **, unsigned int);
+void free_stack(stack_t *head);
+void nop(stack_t **stack, unsigned int n);
+void swap(stack_t **stack, unsigned int line_number);
+void add(stack_t **stack, unsigned int line_number);
+void sub(stack_t **stack, unsigned int line_number);
+void _div(stack_t **stack, unsigned int line_number);
+void mul(stack_t **stack, unsigned int line_number);
+
+
 #endif

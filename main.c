@@ -1,17 +1,21 @@
-#define  _POSIX_C_SOURCE 200809L
 #include "monty.h"
 
-/**
- * main - the main entry point to the program
- * @argc: number of arguments
- * @argv: an array of arguments
- *
- * Return: EXIT_SUCCESS on success, EXIT_FAILURE on failure
- */
-
-
-int main(int argc, char **argv)
+int main(int ac, char **av)
 {
+	arguments_t *args = malloc(sizeof(arguments_t));
 
+	if (!args)
+	{
+		fprintf(stderr, "Error: malloc failed");
+		exit(EXIT_FAILURE);
+	}
 
+	init_args(args, ac, av);
+	precheck_args(args);
+	compile_file(args);
+	free_stack(args->stack);
+	free(args->buffer);
+	fclose(args->source);
+	free(args);
+	return (EXIT_SUCCESS);
 }
