@@ -7,14 +7,12 @@
  */
 
 
-void pall(stack_t **stack, unsigned int line_number)
+void pall(stack_t **stack, unsigned int line_cnt)
 {
-stack_t *tmp = (*stack)->next;
-
-while (tmp)
+if (!stack || !(*stack))
 {
-printf("%d\n", tmp->n);
-tmp = tmp->next;
+fprintf(stderr, "L%d: can't pint, stack empty\n", line_cnt);
+exit(EXIT_FAILURE);
 }
-(void)line_number;
+printf("%d\n", (*stack)->n);
 }
